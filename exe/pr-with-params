@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 
-require 'bundle/setup'
+require 'bundler/setup' # support local testing/development
 require 'optparse'
 require 'uri'
 
 options = { expand: 1 }
+gem_spec = Gem::Specification::load("pr-with-params.gemspec")
 
 parser = OptionParser.new do |opt|
-  opt.banner = 'Usage pr-with-params [options]'
-  opt.define_head 'Pushes current local branch to remote with upstream to origin/<local-branch-name>, and creates custom URL to open pull request with pre-populated fields.'
+  opt.banner = "Usage #{gem_spec.name} [options]"
+  opt.define_head gem_spec.summary
 
   opt.separator ''
 
@@ -46,12 +47,14 @@ begin
   branch_name = `git rev-parse --abbrev-ref HEAD`
   base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`
   remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
+
   uri_host = 'www.github.com'
   uri_path = "/#{remote_git_uri}/compare/#{base_branch.chomp}...#{branch_name}".chomp
   uri_query = URI.encode_www_form(options)
   uri = URI::HTTPS.build(host: uri_host, path: uri_path, query: uri_query)
   url_string = uri.to_s.gsub('&', '^&')
-  puts url_string
+  
+  `git push -u origin $(branch_name)`
   system('open', "#{url_string}")
 rescue StandardError => e
   error_message = {

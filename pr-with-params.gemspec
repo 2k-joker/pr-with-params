@@ -6,18 +6,13 @@ Gem::Specification.new do |spec|
   spec.name          = "pr-with-params"
   spec.version       = Pr::With::Params::VERSION
   spec.authors       = ["2k-joker"]
-  spec.email         = ["khalil.kum@dailypay.com"]
+  spec.email         = ["kum.vanjunior@gmail.com"]
 
-  spec.summary       = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description   = "TODO: Write a longer description or delete this line."
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Pushes current local branch to remote with upstream to origin/<local-branch-name>, and creates custom URL to open pull request with pre-populated fields."
+  spec.homepage      = "https://github.com/2k-joker/pr-with-params"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
