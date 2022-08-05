@@ -1,3 +1,65 @@
 #!/usr/bin/env ruby
 
-require "pr/with/params"
+require 'bundle/setup'
+require 'optparse'
+require 'uri'
+
+options = { expand: 1 }
+
+parser = OptionParser.new do |opt|
+  opt.banner = 'Usage pr-with-params [options]'
+  opt.define_head 'Pushes current local branch to remote with upstream to origin/<local-branch-name>, and creates custom URL to open pull request with pre-populated fields.'
+
+  opt.separator ''
+
+  opt.on('-h', '--help', 'Show this usage help menu') do |_|
+    puts opt
+    exit
+  end
+
+  opt.separator ''
+
+  opt.on('--base-branch', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
+    options[:base_branch] = pr_base_branch
+  end
+
+  opt.on('-t', '--template', "Specify the filename of the target custom PR template (e.g: 'bug_squash_template.md'). Will use default template otherwise.") do |pr_template|
+    options[:template] = pr_template
+  end
+
+  opt.on('-d', '--description', 'Specify a custom PR title') do |pr_description|
+    options[:title] = pr_description
+  end
+
+  opt.on('-l', '--labels', "Specify a list of labels (e.g: 'help+wanted,bug,urgent,work+in+progress').") do |pr_labels|
+    options[:labels] = pr_labels
+  end
+
+  opt.on('-a', '--assignees', "Specify a list of assignees (e.g: 'octocat,gru').") do |pr_assignees|
+    options[:assignees] = pr_assignees
+  end
+end
+
+begin
+  parser.parse!
+
+  branch_name = `git rev-parse --abbrev-ref HEAD`
+  base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`
+  remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
+  uri_host = 'www.github.com'
+  uri_path = "/#{remote_git_uri}/compare/#{base_branch.chomp}...#{branch_name}".chomp
+  uri_query = URI.encode_www_form(options)
+  uri = URI::HTTPS.build(host: uri_host, path: uri_path, query: uri_query)
+  url_string = uri.to_s.gsub('&', '^&')
+  puts url_string
+  system('open', "#{url_string}")
+rescue StandardError => e
+  error_message = {
+    message: 'An error occurred while building or opening your custom pull request URL',
+    reason: e.message,
+    backtrace: e.backtrace.last(10)
+  }.to_json
+
+  STDERR.puts error_message
+  exit 1
+end
