@@ -4,7 +4,7 @@ require_relative "lib/pr/with/params/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "pr-with-params"
-  spec.version       = Pr::With::Params::VERSION
+  spec.version       = PR::With::Params::VERSION
   spec.authors       = ["2k-joker"]
   spec.email         = ["kum.vanjunior@gmail.com"]
 
