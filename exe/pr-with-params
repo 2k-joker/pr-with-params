@@ -45,6 +45,8 @@ end
 begin
   parser.parse!
 
+  # baaaaaa
+
   branch_name = `git rev-parse --abbrev-ref HEAD`
   base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`
   remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
