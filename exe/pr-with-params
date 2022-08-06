@@ -65,7 +65,7 @@ begin
   open_url_message = "\nOpening pull request browser window..."
   puts "\e[32m#{open_url_message}\e[0m"
   `sleep 1`
-  Pr::With::Params.open(host: uri_host, path: uri_path, query: options)
+  PR::With::Params.open(host: uri_host, path: uri_path, query: options)
 rescue StandardError => e
   error_message = {
     message: 'An error occurred while building or opening your custom pull request URL',
