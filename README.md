@@ -1,6 +1,8 @@
 # PR::With::Params
 A lightweight gem that pushes current local branch to remote with upstream to origin/[local-branch-name]. It also opens a new browser window at a URL with customized params, based on specified options, which allows to open pull request with pre-populated fields.
 
+Inspired by GitHub's documentation on [using query params to create pull requets](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/using-query-parameters-to-create-a-pull-request)
+
 ## Installation
 
 Add this line to your application's Gemfile:
