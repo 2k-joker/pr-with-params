@@ -2,8 +2,8 @@
 
 require 'bundler/setup' # support local testing/development
 require 'pr/with/params'
-require 'optparse'
 require 'json'
+require 'optparse'
 
 options = { expand: 1 }
 gem_spec = Gem::Specification::load("pr-with-params.gemspec")
@@ -14,30 +14,30 @@ parser = OptionParser.new do |opt|
 
   opt.separator ''
 
-  opt.on('-h', '--help', 'Show this usage help menu') do |_|
+  opt.on('-h', '--help', 'Show this usage help menu') do |_h|
     puts opt
     exit
   end
 
   opt.separator ''
 
-  opt.on('--base-branch', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
+  opt.on('--base-branch BRANCH', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
     options[:base_branch] = pr_base_branch
   end
 
-  opt.on('-t', '--template', "Specify the filename of the target custom PR template (e.g: 'bug_squash_template.md'). Will use default template otherwise.") do |pr_template|
+  opt.on('-t', '--template TEMPLATE', "Specify the filename of the target custom PR template (e.g: 'bug_squash_template.md'). Will use default template otherwise.") do |pr_template|
     options[:template] = pr_template
   end
 
-  opt.on('-d', '--description', 'Specify a custom PR title') do |pr_description|
+  opt.on('-d', '--description DESC', 'Specify a custom PR title') do |pr_description|
     options[:title] = pr_description
   end
 
-  opt.on('-l', '--labels', "Specify a list of labels (e.g: 'help+wanted,bug,urgent,work+in+progress').") do |pr_labels|
+  opt.on('-l', '--labels LABELS', "Specify a list of labels (e.g: 'help+wanted,bug,urgent,work+in+progress').") do |pr_labels|
     options[:labels] = pr_labels
   end
 
-  opt.on('-a', '--assignees', "Specify a list of assignees (e.g: 'octocat,gru').") do |pr_assignees|
+  opt.on('-a', '--assignees ASSIGNEES', "Specify a list of assignees (e.g: 'octocat,gru').") do |pr_assignees|
     options[:assignees] = pr_assignees
   end
 end
