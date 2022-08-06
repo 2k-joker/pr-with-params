@@ -1,8 +1,5 @@
 # PR::With::Params
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pr/with/params`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A lightweight gem that pushes current local branch to remote with upstream to origin/<local-branch-name>. It also opens a new browser window at a URL with customized params, based on specified options, which allows to open pull request with pre-populated fields.
 
 ## Installation
 
@@ -22,7 +19,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Assuming you've committed your changes and your local branch is ready to be pushed, run:
+
+```
+$ pr-with-params -t new_feature_template.md -l 'work in progress'
+```
+
+For a full list of options, run `$ pr-with-params -h`
 
 ## Development
 
