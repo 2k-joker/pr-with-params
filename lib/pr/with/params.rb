@@ -2,16 +2,17 @@
 
 require_relative "params/version"
 require 'uri'
+require 'launchy'
 
 module Pr
   module With
     module Params
       class Error < StandardError; end
       
-      def self.build_url_string(host:, path:, query:)
+      def self.open(host:, path:, query:)
         uri_query = URI.encode_www_form(query)
-        uri = URI::HTTPS.build(host: host, path: path, query: uri_query)
-        uri.to_s.gsub('&', '^&')
+        url_string = URI::HTTPS.build(host: host, path: path, query: uri_query).to_s
+        Launchy.open(url_string)
       end
     end
   end

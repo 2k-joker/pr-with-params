@@ -6,11 +6,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     minitest (5.16.2)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
+    public_suffix (4.0.7)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.5.0)
@@ -33,6 +38,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  launchy
   minitest (~> 5.0)
   pr-with-params!
   rake (~> 13.0)

@@ -51,7 +51,6 @@ begin
 
   uri_host = 'www.github.com'
   uri_path = "/#{remote_git_uri}/compare/#{base_branch.chomp}...#{branch_name.chomp}"
-  url_string = Pr::With::Params.build_url_string(host: uri_host, path: uri_path, query: options)
 
   puts "current branch: \e[36m#{branch_name.chomp}\e[0m"
   puts "base branch: \e[36m#{base_branch.chomp}\e[0m"
@@ -65,7 +64,7 @@ begin
   open_url_message = "\nOpening pull request browser window..."
   puts "\e[32m#{open_url_message}\e[0m"
   `sleep 1`
-  system('open', "#{url_string}")
+  Pr::With::Params.open(host: uri_host, path: uri_path, query: options)
 rescue StandardError => e
   error_message = {
     message: 'An error occurred while building or opening your custom pull request URL',
