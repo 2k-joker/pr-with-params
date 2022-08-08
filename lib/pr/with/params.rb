@@ -28,7 +28,7 @@ module PR
           backtrace: e.backtrace&.last(10)
         }.to_json
 
-        STDERR.puts "\e[35mWARNING\e[0m: " + error_message
+        STDERR.puts "\e[35mWARNING\e[0m: " + error_message + "\n"
         
         {}
       end
