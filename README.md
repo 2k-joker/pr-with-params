@@ -29,6 +29,36 @@ $ pr-with-params -t new_feature_template.md -l 'work in progress'
 
 For a full list of options, run `$ pr-with-params -h`
 
+#### Using Config File
+
+Gem supports defining options in a yaml file (`.yaml`, `.yml`) like so:
+```yaml
+default:
+  base_branch: main
+  template: new_feature_template.md
+  assignees: 2k-joker
+  labels: enhancement
+
+bug_fix:
+  template: bug_fix_template.md
+  labels: bug,urgent
+```
+
+* To run with config file, use `$ pr-with-params --conf='path/to/file.yml' --scope=bug_fix`. If `--scope` option is not specified, only `:default` scope will apply.
+* All your defaults go in the `:default` scope
+* Only fields defined in another scope will override the defaults. In the example above, the final list of configs will be:
+
+```ruby
+{ base_branch: 'main', template: 'bug_fix_template.md', assignees: '2k-joker', labels: 'bug,urgent' }
+```
+
+**Supported configs**
+* base_branch
+* template
+* title
+* labels
+* assignees
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
