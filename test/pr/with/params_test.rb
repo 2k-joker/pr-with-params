@@ -7,7 +7,7 @@ class PR::With::ParamsTest < Minitest::Test
     refute_nil ::PR::With::Params::VERSION
   end
 
-  def test_it_does_something_useful
+  def test_that_it_open_the_expected_url
     URI.stub(:encode_www_form, uri_mock_on_encode_www_form) do
       URI::HTTPS.stub(:build, uri_https_mock_on_build) do
         Launchy.stub(:open, launchy_mock_on_open) do
@@ -18,6 +18,30 @@ class PR::With::ParamsTest < Minitest::Test
           assert ::PR::With::Params.open(host: @host, path: @path, query: @query)
         end
       end
+    end
+  end
+
+  def test_that_it_returns_the_expected_config_if_no_error
+    @config_parser_mock = Minitest::Mock.new
+    @config_parser_mock.expect(:parse!, { foo: 'bar' })
+
+    ::PR::With::Params::ConfigParser.stub(:new, config_parser_on_new) do
+      @file_path = '/path/to/config.yml'
+      @scope = 'feature'
+
+      assert_equal ::PR::With::Params.parse_config(@file_path, @scope), { foo: 'bar' }
+      assert_mock @config_parser_mock
+    end
+  end
+
+  def test_that_it_returns_the_expected_config_if_error
+    @raised_error = ->(_options) { raise TypeError.new('Not my type') }
+
+    ::PR::With::Params::ConfigParser.stub(:new, @raised_error) do
+      @file_path = '/path/to/config.yml'
+        @scope = 'feature'
+  
+        assert_equal ::PR::With::Params.parse_config(@file_path, @scope), {}
     end
   end
 
@@ -44,6 +68,14 @@ class PR::With::ParamsTest < Minitest::Test
       raise ArgumentError unless url_arg == 'https//www.example.com?url_query=string'
       puts 'Url correctly opened!'
       true
+    end
+  end
+
+  def config_parser_on_new
+    ->(options) do
+      raise ArgumentError unless options[:config_file_path] == @file_path && options[:scope] == @scope
+
+      @config_parser_mock
     end
   end
 end
