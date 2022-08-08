@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["2k-joker"]
   spec.email         = ["kum.vanjunior@gmail.com"]
 
-  spec.summary       = "Pushes current local branch to remote with upstream to origin/[local-branch-name]. It also opens a new browser window at a URL with customized params, based on specified options, which allows to open pull request with pre-populated fields."
+  spec.summary       = "Pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base."
   spec.homepage      = "https://github.com/2k-joker/pr-with-params"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
