@@ -29,9 +29,9 @@ module PR
 
         def scoped_config
           if scope == :default || parsed_config.fetch(scope, {}).empty?
-            parsed_config[scope]
+            parsed_config.fetch(:default, {})
           else
-            parsed_config[:default].merge(parsed_config[scope])
+            parsed_config.fetch(:default, {}).merge(parsed_config[scope])
           end
         end
 
