@@ -56,7 +56,7 @@ begin
   parser.parse!
 
   config_options = PR::With::Params.parse_config(config_file_path, config_scope)
-  options.merge!(config_options)
+  config_options.merge!(options)
 
   branch_name = `git rev-parse --abbrev-ref HEAD`.chomp
   base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`.chomp

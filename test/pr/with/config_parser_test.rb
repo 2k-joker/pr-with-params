@@ -48,6 +48,18 @@ class PR::With::Params::ConfigParserTest < Minitest::Test
     end
   end
 
+  def test_that_it_returns_empty_hash_if_default_or_custom_scope_is_undefined
+    @parsed_config = {}
+
+    File.stub(:file?, true) do
+      IO.stub(:read, io_on_read) do
+        config = ::PR::With::Params::ConfigParser.new(config_file_path: '/file/path.yml', scope: 'some_scope').parse!
+
+        assert_equal config, {}
+      end
+    end
+  end
+
   private
 
 
