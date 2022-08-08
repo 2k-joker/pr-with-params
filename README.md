@@ -45,7 +45,8 @@ bug_fix:
 ```
 
 * To run with config file, use `$ pr-with-params --conf='path/to/file.yml' --scope=bug_fix`. If `--scope` option is not specified, only `:default` scope will apply.
-* All your defaults go in the `:default` scope
+* If you specify a config file (`--conf`) and also pass options by flag (e.g `--base-branch=develop`), the flag value will override the config value.
+* All your defaults go in the `:default` scope.
 * Only fields defined in another scope will override the defaults. In the example above, the final list of configs will be:
 
 ```ruby
