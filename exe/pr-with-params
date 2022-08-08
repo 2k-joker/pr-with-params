@@ -4,8 +4,11 @@ require 'bundler/setup' # support local testing/development
 require_relative '../lib/pr/with/params'
 require 'json'
 require 'optparse'
+require 'open3'
 
 options = { expand: 1 }
+config_file_path = ''
+config_scope = nil
 
 parser = OptionParser.new do |opt|
   opt.banner = "Usage pr-with-params [options]"
@@ -18,6 +21,15 @@ parser = OptionParser.new do |opt|
   end
 
   opt.separator ''
+
+  opt.on('--conf FILE_PATH', 'Path to yaml file where options are defined. NOTE that relative paths are not supported.') do |conf_file|
+    stdout, _stderr, _status = Open3.capture3("echo #{conf_file}")
+    config_file_path = stdout.chomp
+  end
+
+  opt.on('--scope CONFIG_SCOPE', 'Specify the scope name under which options are defined.') do |scope|
+    config_scope = scope
+  end
 
   opt.on('--base-branch BRANCH', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
     options[:base_branch] = pr_base_branch
@@ -43,18 +55,21 @@ end
 begin
   parser.parse!
 
-  branch_name = `git rev-parse --abbrev-ref HEAD`
-  base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`
+  config_options = PR::With::Params.parse_config(config_file_path, config_scope)
+  options.merge!(config_options)
+
+  branch_name = `git rev-parse --abbrev-ref HEAD`.chomp
+  base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`.chomp
   remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
 
   uri_host = 'www.github.com'
-  uri_path = "/#{remote_git_uri}/compare/#{base_branch.chomp}...#{branch_name.chomp}"
+  uri_path = "/#{remote_git_uri}/compare/#{base_branch}...#{branch_name}"
 
-  puts "current branch: \e[36m#{branch_name.chomp}\e[0m"
-  puts "base branch: \e[36m#{base_branch.chomp}\e[0m"
+  puts "\ncurrent branch: \e[36m#{branch_name}\e[0m"
+  puts "base branch: \e[36m#{base_branch}\e[0m"
   puts "repo path: \e[36m#{remote_git_uri}\e[0m"
 
-  push_message = "\nPushing your local branch to origin/#{branch_name.chomp}..."
+  push_message = "\nPushing your local branch to origin/#{branch_name}..."
   puts "\e[32m#{push_message}\e[0m"
   `sleep 1`
   system("git push -u origin #{branch_name}")
@@ -67,9 +82,9 @@ rescue StandardError => e
   error_message = {
     message: 'An error occurred while building or opening your custom pull request URL',
     reason: e.message,
-    backtrace: e.backtrace.last(10)
+    backtrace: e.backtrace&.last(10)
   }.to_json
 
-  STDERR.puts error_message
+  STDERR.puts "\e[31mERROR\e[0m: " + error_message
   exit 1
 end
