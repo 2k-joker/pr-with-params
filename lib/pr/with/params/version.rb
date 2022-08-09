@@ -3,7 +3,7 @@
 module PR
   module With
     module Params
-      VERSION = "0.2.1"
+      VERSION = "1.0.1"
     end
   end
 end
