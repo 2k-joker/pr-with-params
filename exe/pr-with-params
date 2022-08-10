@@ -72,7 +72,7 @@ begin
   push_message = "\nPushing your local branch to origin/#{branch_name}..."
   puts "\e[32m#{push_message}\e[0m"
   `sleep 1`
-  system("git push -u origin #{branch_name}")
+  system("git push -u origin #{branch_name}", exception: true)
 
   open_url_message = "\nOpening pull request browser window..."
   puts "\e[32m#{open_url_message}\e[0m"
@@ -85,6 +85,6 @@ rescue StandardError => e
     backtrace: e.backtrace&.last(10)
   }.to_json
 
-  STDERR.puts "\e[31mERROR\e[0m: " + error_message + "\n"
+  STDERR.puts "\n" + "\e[31mERROR:\e[0m " + error_message + "\n"
   exit 1
 end
