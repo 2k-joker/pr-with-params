@@ -36,8 +36,8 @@ module PR
         end
 
         def validate_file_type!
-          raise ArgumentError.new('Config file path is invalid or file does not exist.') unless file_exists?
           raise TypeError.new('Config file type must be YAML (.yaml or .yml)') unless yaml_file?
+          raise ArgumentError.new("Config file path is invalid or file does not exist: #{config_file_path}") unless file_exists?
         end
 
         def yaml_file?

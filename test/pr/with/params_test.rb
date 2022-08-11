@@ -22,15 +22,15 @@ class PR::With::ParamsTest < Minitest::Test
   end
 
   def test_that_it_returns_the_expected_config_if_no_error
-    @config_parser_mock = Minitest::Mock.new
-    @config_parser_mock.expect(:parse!, { foo: 'bar' })
+    assert_equal ::PR::With::Params.parse_config('', nil), {}
+  end
 
-    ::PR::With::Params::ConfigParser.stub(:new, config_parser_on_new) do
+  def test_that_it_returns_the_expected_config_if_file_path_is_empty
+    ::PR::With::Params::ConfigParser.stub(:new, @raised_error) do
       @file_path = '/path/to/config.yml'
-      @scope = 'feature'
-
-      assert_equal ::PR::With::Params.parse_config(@file_path, @scope), { foo: 'bar' }
-      assert_mock @config_parser_mock
+        @scope = 'feature'
+  
+        assert_equal ::PR::With::Params.parse_config(@file_path, @scope), {}
     end
   end
 

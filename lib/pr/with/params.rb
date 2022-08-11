@@ -20,7 +20,9 @@ module PR
       end
 
       def parse_config(file_path, scope)
-        config_options = ConfigParser.new(config_file_path: file_path, scope: scope).parse!
+        return {} if file_path.empty?
+
+        ConfigParser.new(config_file_path: file_path, scope: scope).parse!
       rescue StandardError => e
         error_message = {
           message: "Error parsing config file. Using defaults",
