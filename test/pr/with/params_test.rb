@@ -14,7 +14,7 @@ class PR::With::ParamsTest < Minitest::Test
           @host = 'www.example.com'
           @path = '/path/to/freedom'
           @query = { url_query: 'string' }
-          
+
           assert ::PR::With::Params.open(host: @host, path: @path, query: @query)
         end
       end
@@ -29,7 +29,7 @@ class PR::With::ParamsTest < Minitest::Test
     ::PR::With::Params::ConfigParser.stub(:new, @raised_error) do
       @file_path = '/path/to/config.yml'
         @scope = 'feature'
-  
+
         assert_equal ::PR::With::Params.parse_config(@file_path, @scope), {}
     end
   end
@@ -40,7 +40,7 @@ class PR::With::ParamsTest < Minitest::Test
     ::PR::With::Params::ConfigParser.stub(:new, @raised_error) do
       @file_path = '/path/to/config.yml'
         @scope = 'feature'
-  
+
         assert_equal ::PR::With::Params.parse_config(@file_path, @scope), {}
     end
   end
@@ -66,6 +66,7 @@ class PR::With::ParamsTest < Minitest::Test
   def launchy_mock_on_open
     ->(url_arg) do
       raise ArgumentError unless url_arg == 'https//www.example.com?url_query=string'
+
       puts 'Url correctly opened!'
       true
     end
