@@ -39,7 +39,7 @@ parser = OptionParser.new do |opt|
     options[:template] = pr_template
   end
 
-  opt.on('-d', '--description DESC', 'Specify a custom PR title') do |pr_description|
+  opt.on('-d', '--description DESC', 'Specify a custom PR title. Will use the first branch commit message otherwise.') do |pr_description|
     options[:title] = pr_description
   end
 
@@ -60,8 +60,11 @@ begin
 
   branch_name = `git rev-parse --abbrev-ref HEAD`.chomp
   base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`.chomp
-  remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
 
+  default_title = `git show-branch --no-name $(git log #{base_branch}..#{branch_name} --pretty=format:"%h" | tail -1)`.chomp
+  options[:title] ||= default_title
+
+  remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
   uri_host = 'www.github.com'
   uri_path = "/#{remote_git_uri}/compare/#{base_branch}...#{branch_name}"
 
@@ -85,6 +88,6 @@ rescue StandardError => e
     backtrace: e.backtrace&.last(10)
   }.to_json
 
-  STDERR.puts "\n" + "\e[31mERROR:\e[0m " + error_message + "\n"
+  warn "\e[31mERROR\e[0m: " + error_message + "\n"
   exit 1
 end
