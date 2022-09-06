@@ -62,14 +62,6 @@ class PR::With::Params::ConfigParserTest < Minitest::Test
 
   private
 
-  def yaml_load_on_call
-    ->(file_content) do
-      raise ArgumentError unless file_content == @parsed_config.to_yaml
-
-      @parsed_config
-    end
-  end
-
   def io_on_read
     ->(file_path) do
       raise ArgumentError unless file_path == '/file/path.yml'
