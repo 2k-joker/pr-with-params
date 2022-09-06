@@ -2,6 +2,7 @@
 
 require_relative 'params/version'
 require_relative 'params/config_parser'
+require_relative 'params/options_validator'
 require 'uri'
 require 'json'
 require 'launchy'
@@ -31,6 +32,11 @@ module PR
         warn "\e[35mWARNING\e[0m: " + error_message + "\n"
 
         {}
+      end
+
+      def validate_options(options)
+        validators = options.delete(:validators)
+        OptionsValidator.validate!(options, validators: validators)
       end
     end
   end

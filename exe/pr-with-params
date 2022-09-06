@@ -6,10 +6,11 @@ require 'json'
 require 'optparse'
 require 'open3'
 
-options = { expand: 1 }
+options = { expand: 1, validators: [] }
 config_file_path = ''
 config_scope = nil
 
+# rubocop:disable Metrics/BlockLength
 parser = OptionParser.new do |opt|
   opt.banner = "Usage pr-with-params [options]"
 
@@ -50,13 +51,20 @@ parser = OptionParser.new do |opt|
   opt.on('-a', '--assignees ASSIGNEES', "Specify a list of assignees (e.g: 'octocat,codedog').") do |pr_assignees|
     options[:assignees] = pr_assignees
   end
+
+  opt.on('--validate-conventional-commits', 'Validates that your PR title conforms to conventional commits specs.') do |_|
+    options[:validators] << :conventional_commits
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 begin
   parser.parse!
 
   config_options = PR::With::Params.parse_config(config_file_path, config_scope)
   options = config_options.merge(options)
+
+  PR::With::Params.validate_options(options)
 
   branch_name = `git rev-parse --abbrev-ref HEAD`.chomp
   base_branch = options.delete(:base_branch) || `git remote show origin | grep "HEAD branch" | sed 's/.*: //'`.chomp

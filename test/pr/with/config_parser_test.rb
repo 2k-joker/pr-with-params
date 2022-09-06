@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class PR::With::Params::ConfigParserTest < Minitest::Test
   def test_that_it_has_valid_frozen_config_keys
-    assert_equal ::PR::With::Params::ConfigParser::VALID_CONFIG_KEYS, %i[base_branch template title labels assignees]
+    assert_equal ::PR::With::Params::ConfigParser::VALID_CONFIG_KEYS, %i[validators base_branch template title labels assignees]
     assert_predicate ::PR::With::Params::ConfigParser::VALID_CONFIG_KEYS, :frozen?
   end
 
@@ -31,7 +31,7 @@ class PR::With::Params::ConfigParserTest < Minitest::Test
       IO.stub(:read, io_on_read) do
         config = ::PR::With::Params::ConfigParser.new(config_file_path: '/file/path.yml').parse!
 
-        assert_equal config, { :template => 'default-template' }
+        assert_equal config, { template: 'default-template' }
       end
     end
   end
@@ -43,7 +43,7 @@ class PR::With::Params::ConfigParserTest < Minitest::Test
       IO.stub(:read, io_on_read) do
         config = ::PR::With::Params::ConfigParser.new(config_file_path: '/file/path.yml', scope: 'some_scope').parse!
 
-        assert_equal config, { :template => 'custom-template', :labels => 'wip' }
+        assert_equal config, { template: 'custom-template', labels: 'wip' }
       end
     end
   end
@@ -61,7 +61,6 @@ class PR::With::Params::ConfigParserTest < Minitest::Test
   end
 
   private
-
 
   def yaml_load_on_call
     ->(file_content) do
