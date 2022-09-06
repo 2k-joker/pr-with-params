@@ -8,7 +8,7 @@ module PR
         attr_reader :config_file_path, :scope, :parsed_config, :filtered_config
 
         # Constants
-        VALID_CONFIG_KEYS = %i[base_branch template title labels assignees].freeze
+        VALID_CONFIG_KEYS = %i[validators base_branch template title labels assignees].freeze
 
         def initialize(config_file_path:, scope: nil)
           @config_file_path = config_file_path
@@ -23,7 +23,7 @@ module PR
         private
 
         def parse_yaml_config
-          @parsed_config = YAML::load(IO.read(config_file_path)).transform_keys(&:to_sym)
+          @parsed_config = YAML.safe_load(IO.read(config_file_path)).transform_keys(&:to_sym)
           @filtered_config = scoped_config.transform_keys(&:to_sym).slice(*VALID_CONFIG_KEYS)
         end
 
@@ -36,8 +36,8 @@ module PR
         end
 
         def validate_file_type!
-          raise TypeError.new('Config file type must be YAML (.yaml or .yml)') unless yaml_file?
-          raise ArgumentError.new("Config file path is invalid or file does not exist: #{config_file_path}") unless file_exists?
+          raise(TypeError, 'Config file type must be YAML (.yaml or .yml)') unless yaml_file?
+          raise(ArgumentError, "Config file path is invalid or file does not exist: #{config_file_path}") unless file_exists?
         end
 
         def yaml_file?

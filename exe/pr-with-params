@@ -10,6 +10,7 @@ options = { expand: 1 }
 config_file_path = ''
 config_scope = nil
 
+# rubocop:disable Metrics/BlockLength
 parser = OptionParser.new do |opt|
   opt.banner = "Usage pr-with-params [options]"
 
@@ -50,7 +51,12 @@ parser = OptionParser.new do |opt|
   opt.on('-a', '--assignees ASSIGNEES', "Specify a list of assignees (e.g: 'octocat,codedog').") do |pr_assignees|
     options[:assignees] = pr_assignees
   end
+
+  opt.on('--validate-conventional-commits', 'Validates that your PR title conforms to conventional commits specs.') do |_|
+    options[:validators] = options[:validators].to_a << :conventional_commits
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 begin
   parser.parse!
@@ -63,6 +69,8 @@ begin
 
   default_title = `git show-branch --no-name $(git log #{base_branch}..#{branch_name} --pretty=format:"%h" | tail -1)`.chomp
   options[:title] ||= default_title
+
+  PR::With::Params.validate_options(options)
 
   remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
   uri_host = 'www.github.com'

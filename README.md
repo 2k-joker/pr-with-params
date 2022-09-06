@@ -34,6 +34,8 @@ For a full list of options, run `$ pr-with-params -h`
 Gem supports defining options in a yaml file (`.yaml`, `.yml`) like so:
 ```yaml
 default:
+  validators:
+    - conventional_commits
   base_branch: main
   template: new_feature_template.md
   assignees: 2k-joker
@@ -54,11 +56,17 @@ bug_fix:
 ```
 
 **Supported configs**
-* base_branch
-* template
-* title
-* labels
-* assignees
+| Config | Type | Example |
+| :--- | :---: | :--- |
+| validators | `Array` | \`[conventional_commits]\` |
+| base_branch | `String` | develop |
+| template | `String` | new_feature_template.md |
+| title | `String` | 'Update login screen' |
+| lables | `String` | frontend,WIP |
+| assignees | `String` | 2k-joker |
+
+#### Validators
+* **Conventional Commits**: Gem supports validation of conventional commits for PR `:title`. If you want to follow [conventional commit specs](https://www.conventionalcommits.org/en/v1.0.0/#specification) in your codebase, you may want to use this validation. To turn it on, set the `--validate-conventional-commits` flag or add `conventional_commits` to the list of validators in your config file.
 
 ## Development
 
