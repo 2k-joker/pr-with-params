@@ -52,7 +52,7 @@ bug_fix:
 * Only fields defined in another scope will override the defaults. In the example above, the final list of configs will be:
 
 ```ruby
-{ base_branch: 'main', template: 'bug_fix_template.md', assignees: '2k-joker', labels: 'bug,urgent' }
+{ validators: ['conventional_commits'], base_branch: 'main', template: 'bug_fix_template.md', assignees: '2k-joker', labels: 'bug,urgent' }
 ```
 
 **Supported configs**
