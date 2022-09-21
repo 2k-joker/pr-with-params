@@ -6,7 +6,7 @@ require 'json'
 require 'optparse'
 require 'open3'
 
-options = { expand: 1 }
+options = { expand: 1, validators: [] }
 config_file_path = ''
 config_scope = nil
 
