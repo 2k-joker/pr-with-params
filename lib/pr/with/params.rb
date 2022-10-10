@@ -21,15 +21,16 @@ module PR
       end
 
       def parse_config(file_path, scope)
+        ConfigParser.new(config_file_path: file_path, scope: scope).parse!
+
         file_path.empty? ? {} : ConfigParser.new(config_file_path: file_path, scope: scope).parse!
       rescue StandardError => e
-        error_message = {
-          message: "Error parsing config file. Using defaults",
-          reason: e.message,
-          backtrace: e.backtrace&.last(10)
-        }.to_json
+        message = "\e[35mWARNING\e[0m: Error parsing config file. Using defaults"
+        reason = "reason: #{e.message}"
+        backtrace = "backtrace: #{e.backtrace&.last(10)&.join("\n")}"
+        error_message = [message, reason, backtrace, "\n\n"].join("\n")
 
-        warn "\e[35mWARNING\e[0m: " + error_message + "\n"
+        warn error_message
 
         {}
       end

@@ -90,12 +90,11 @@ begin
   `sleep 1`
   PR::With::Params.open(host: uri_host, path: uri_path, query: options)
 rescue StandardError => e
-  error_message = {
-    message: 'An error occurred while building or opening your custom pull request URL',
-    reason: e.message,
-    backtrace: e.backtrace&.last(10)
-  }.to_json
+  message = "\e[31mERROR\e[0m: An error occurred while building or opening your custom pull request URL"
+  reason = "reason: #{e.message}"
+  backtrace = "backtrace: #{e.backtrace&.last(10)&.join("\n")}"
+  error_message = [message, reason, backtrace, "\n\n"].join("\n")
 
-  warn "\e[31mERROR\e[0m: " + error_message + "\n"
+  warn error_message
   exit 1
 end
