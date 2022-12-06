@@ -1,7 +1,10 @@
 # PR::With::Params [![Gem Version](https://badge.fury.io/rb/pr-with-params.svg)](https://badge.fury.io/rb/pr-with-params)
-A lightweight gem that pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base.
+A lightweight ruby gem that pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base.
 
 Inspired by GitHub's documentation on [using query params to create pull requets](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/using-query-parameters-to-create-a-pull-request)
+
+## Prerequisites
+This gem currently uses the [launchy gem](https://github.com/copiousfreetime/launchy) to open URLs. Ensure your code base satisfies launchy's dependencies.
 
 ## Installation
 
