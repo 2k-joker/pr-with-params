@@ -23,6 +23,13 @@ parser = OptionParser.new do |opt|
 
   opt.separator ''
 
+  opt.on('-v', '--version', 'Returns your current local gem version') do |_h|
+    puts 'pr-with-params ' + PR::With::Params::VERSION
+    exit
+  end
+
+  opt.separator ''
+
   opt.on('--conf FILE_PATH', 'Path to yaml file where options are defined. NOTE that relative paths are not supported.') do |conf_file|
     stdout, _stderr, _status = Open3.capture3("echo #{conf_file}")
     config_file_path = stdout.chomp
@@ -32,7 +39,7 @@ parser = OptionParser.new do |opt|
     config_scope = scope
   end
 
-  opt.on('--base-branch BRANCH', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
+  opt.on('-b', '--base-branch BRANCH', "Specify the base branch for your PR (e.g: 'develop'). Will use default branch otherwise.") do |pr_base_branch|
     options[:base_branch] = pr_base_branch
   end
 
@@ -70,7 +77,7 @@ begin
   default_title = `git show-branch --no-name $(git log #{base_branch}..#{branch_name} --pretty=format:"%h" | tail -1)`.chomp
   options[:title] ||= default_title
 
-  PR::With::Params.validate_options(options)
+  PR::With::Params.validate_options!(options)
 
   remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
   uri_host = 'www.github.com'
