@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base."
   spec.homepage      = "https://github.com/2k-joker/pr-with-params"
   spec.licenses      = ["MIT"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
 
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
+  spec.add_dependency "launchy", "~> 2.5"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html

@@ -21,8 +21,6 @@ module PR
       end
 
       def parse_config(file_path, scope)
-        ConfigParser.new(config_file_path: file_path, scope: scope).parse!
-
         file_path.empty? ? {} : ConfigParser.new(config_file_path: file_path, scope: scope).parse!
       rescue StandardError => e
         message = "\e[35mWARNING\e[0m: Error parsing config file. Using defaults"
@@ -35,7 +33,7 @@ module PR
         {}
       end
 
-      def validate_options(options)
+      def validate_options!(options)
         validators = options.delete(:validators)
         OptionsValidator.validate!(options, validators: validators)
       end
