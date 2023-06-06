@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pr-with-params (2.0.0)
+    pr-with-params (2.0.1)
       activesupport
       launchy (~> 2.5)
       rake (~> 13.0)

@@ -15,3 +15,15 @@ To migrate to this version, simply run `gem update pr-with-params`
  
 ### Fixed
 - Occasional failures related to `launchy` not being loaded properly
+
+## [2.0.1] - 2023-06-05
+
+To migrate to this version, simply run `gem update pr-with-params`
+ 
+### Added
+
+### Changed
+ 
+### Fixed
+- Typos in messages displayed
+- Remove unnecessary print statements
