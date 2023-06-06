@@ -1,4 +1,4 @@
-# PR::With::Params [![Gem Version](https://badge.fury.io/rb/pr-with-params.svg)](https://badge.fury.io/rb/pr-with-params)
+# PRWithParams [![Gem Version](https://badge.fury.io/rb/pr-with-params.svg)](https://badge.fury.io/rb/pr-with-params)
 A lightweight ruby gem that pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base.
 
 Inspired by GitHub's documentation on [using query params to create pull requets](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/using-query-parameters-to-create-a-pull-request)
@@ -21,13 +21,15 @@ Or install it yourself as:
 
 ## Usage
 
+NOTE: CLI name has changed as of v2.0.0 from `pr-with-params` to `pr-wip` along with some other breaking changes. See changelog for more details
+
 Assuming you've committed your changes and your local branch is ready to be pushed, run:
 
 ```
-$ pr-with-params -t new_feature_template.md -l 'work in progress'
+$ pr-wip -t new_feature_template.md -l 'work in progress'
 ```
 
-For a full list of options, run `$ pr-with-params -h`
+For a full list of options, run `$ pr-wip -h`
 
 #### Using Config File
 
@@ -46,8 +48,8 @@ bug_fix:
   labels: bug,urgent
 ```
 
-* To run with config file, use `$ pr-with-params --conf='path/to/file.yml' --scope=bug_fix`. If `--scope` option is not specified, only `:default` scope will apply.
-* If you specify a config file (`--conf`) and also pass options by flag (e.g `--base-branch=develop`), the flag value will override the config value.
+* To run with config file, use `$ pr-wip --config_path='path/to/file.yml' --scope=bug_fix`. If `--scope` option is not specified, only `:default` scope will apply.
+* If you specify a config file (`--config_path`) and also pass options by flag (e.g `--base-branch=develop`), the flag value will override the config value.
 * All your defaults go in the `:default` scope.
 * Only fields defined in another scope will override the defaults. In the example above, the final list of configs will be:
 
@@ -59,6 +61,7 @@ bug_fix:
 | Config | Type | Example |
 | :--- | :---: | :--- |
 | validators | `Array` | \`[conventional_commits]\` |
+| ignore_conventional_commits | `Boolean` | true |
 | base_branch | `String` | develop |
 | template | `String` | new_feature_template.md |
 | title | `String` | 'Update login screen' |
@@ -66,7 +69,7 @@ bug_fix:
 | assignees | `String` | 2k-joker |
 
 #### Validators
-* **Conventional Commits**: Gem supports validation of conventional commits for PR `:title`. If you want to follow [conventional commit specs](https://www.conventionalcommits.org/en/v1.0.0/#specification) in your codebase, you may want to use this validation. To turn it on, set the `--validate-conventional-commits` flag or add `conventional_commits` to the list of validators in your config file.
+* **Conventional Commits**: Gem supports validation of conventional commits for PR `:title` by default. This is to encourage users to follow [conventional commit specs](https://www.conventionalcommits.org/en/v1.0.0/#specification). To turn it off, pass the `--ignore-conventional-commits` flag or add `conventional_commits` to the list of validators in your config file or set `ignore_conventional_commits: true` in your config file.
 
 ## Development
 

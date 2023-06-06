@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup' # support local testing/development
+require_relative '../lib/pr_with_params'
+
+PRWithParams::CLI.start
