@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require_relative "lib/pr/with/params/version"
+require_relative "lib/pr_with_params/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "pr-with-params"
-  spec.version       = PR::With::Params::VERSION
+  spec.version       = PRWithParams::VERSION
   spec.authors       = ["2k-joker"]
   spec.email         = ["kum.vanjunior@gmail.com"]
 
   spec.summary       = "Pushes current local branch to remote with upstream at origin/[local-branch-name]. It also opens a new pull request browser window at a URL with customized query params, based on specified options, which pre-populates certain fields in the pull request. This is especially useful when supporting multiple PR templates within a code base."
   spec.homepage      = "https://github.com/2k-joker/pr-with-params"
   spec.licenses      = ["MIT"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
+  spec.required_ruby_version = Gem::Requirement.new("~> 3.1.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
 
@@ -24,9 +24,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
   spec.add_dependency "launchy", "~> 2.5"
+  spec.add_dependency "rake", "~> 13.0"
+  spec.add_dependency "thor"
+  spec.add_dependency "activesupport"
 
-  # For more information and examples about making a new gem, checkout our
-  # guide at: https://bundler.io/guides/creating_gem.html
+  spec.add_development_dependency "minitest", "~> 5.18.0"
+  spec.add_development_dependency "rubocop", "~> 0.80"
 end
