@@ -33,8 +33,6 @@ module PRWithParams
       default_title = `git show-branch --no-name $(git log #{base_branch}..#{branch_name} --pretty=format:"%h" | tail -1)`.chomp
       all_options[:title] ||= default_title
 
-      puts all_options
-      puts options
       PRWithParams::OptionsValidator.validate!(all_options.except(:validators), validators: all_options[:validators])
 
       remote_git_uri = `git config --get remote.origin.url`.sub('git@github.com:', '').sub('.git', '').chomp
