@@ -27,8 +27,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "launchy", "~> 2.5"
   spec.add_dependency "rake", "~> 13.0"
   spec.add_dependency "thor"
-  spec.add_dependency "activesupport"
+  spec.add_dependency "activesupport", "~> 7.0.4"
 
   spec.add_development_dependency "minitest", "~> 5.18.0"
   spec.add_development_dependency "rubocop", "~> 0.80"
+  spec.add_development_dependency "rubocop-minitest", "~> 0.31.0"
+  spec.add_development_dependency "minitest-stub_any_instance", "~> 1.0.3"
+  spec.add_development_dependency "pry", "~> 0.13.1"
 end
