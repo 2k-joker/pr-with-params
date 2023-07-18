@@ -8,7 +8,7 @@ module PRWithParams
     desc "open", "Open a new pull request for local branch"
     long_desc <<-LONGDESC
       `pr-wip open [options]` will open a new browser window with a pull request at a URL with customized query params from <options>.
-      
+
       The pull request will be pre-populated with certain fields based on custom query params
     LONGDESC
     option :template, type: :string, aliases: ['-t'], desc: 'Specify the filename of the target custom PR template (e.g: bug_squash_template.md). Will use default template otherwise.'
@@ -22,7 +22,7 @@ module PRWithParams
     option :ignore_conventional_commits, type: :boolean, desc: 'Allow PR titles that do not conform to conventional commits spec.'
     def open
       home_dir_path = `echo $HOME`.chomp
-      config_file_path = "#{home_dir_path}/#{options[:config_path].delete_prefix('/')}"
+      config_file_path = "#{home_dir_path}/#{options[:config_path].delete_prefix("/")}"
       config_options = (options[:config_path].empty? ? {} : PRWithParams::ConfigParser.new(config_file_path: config_file_path, scope: options[:scope]).parse!).with_indifferent_access
       options[:validators].delete(:conventional_commits) if options[:ignore_conventional_commits]
       all_options = config_options.merge(options)
@@ -45,7 +45,7 @@ module PRWithParams
       reason = "reason: #{e.message}"
       backtrace = "backtrace: #{e.backtrace&.last(10)&.join("\n")}"
       error_message = [message, reason, backtrace, "\n\n"].join("\n")
-    
+
       warn error_message
       exit 1
     end
@@ -56,7 +56,7 @@ module PRWithParams
       puts "current branch: \e[36m#{branch_name}\e[0m"
       puts "base branch: \e[36m#{base_branch}\e[0m"
       puts "repo path: \e[36m#{remote_git_uri}\e[0m"
-    
+
       push_message = "\nPushing your local branch to origin/#{branch_name}..."
       puts "\e[32m#{push_message}\e[0m"
       `sleep 1`

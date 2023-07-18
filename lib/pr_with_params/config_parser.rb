@@ -23,7 +23,7 @@ module PRWithParams
     private
 
     def parse_yaml_config
-      @parsed_config = YAML.safe_load(IO.read(config_file_path)).to_h.transform_keys(&:to_sym)
+      @parsed_config = YAML.safe_load(IO.read(config_file_path)).to_h.transform_keys(&:to_sym) # rubocop:disable Security/IoMethods
       @filtered_config = scoped_config.transform_keys(&:to_sym).slice(*VALID_CONFIG_KEYS)
     end
 
