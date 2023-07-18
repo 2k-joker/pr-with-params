@@ -2,7 +2,7 @@ require_relative "../test_helper"
 
 class PRWithParams::ConfigParserTest < Minitest::Test
   def test_that_it_has_valid_frozen_config_keys
-    assert_equal PRWithParams::ConfigParser::VALID_CONFIG_KEYS, %i[validators base_branch template title labels assignees]
+    assert_equal(%i[validators base_branch template title labels assignees], PRWithParams::ConfigParser::VALID_CONFIG_KEYS)
     assert_predicate PRWithParams::ConfigParser::VALID_CONFIG_KEYS, :frozen?
   end
 
@@ -29,7 +29,7 @@ class PRWithParams::ConfigParserTest < Minitest::Test
       IO.stub(:read, io_on_read) do
         config = PRWithParams::ConfigParser.new(config_file_path: '/file/path.yml').parse!
 
-        assert_equal config, { template: 'default-template' }
+        assert_equal({ template: 'default-template' }, config)
       end
     end
   end
@@ -41,7 +41,7 @@ class PRWithParams::ConfigParserTest < Minitest::Test
       IO.stub(:read, io_on_read) do
         config = PRWithParams::ConfigParser.new(config_file_path: '/file/path.yml', scope: 'some_scope').parse!
 
-        assert_equal config, { template: 'custom-template', labels: 'wip' }
+        assert_equal({ template: 'custom-template', labels: 'wip' }, config)
       end
     end
   end
@@ -53,7 +53,7 @@ class PRWithParams::ConfigParserTest < Minitest::Test
       IO.stub(:read, io_on_read) do
         config = PRWithParams::ConfigParser.new(config_file_path: '/file/path.yml', scope: 'some_scope').parse!
 
-        assert_equal config, {}
+        assert_empty(config)
       end
     end
   end
@@ -61,7 +61,7 @@ class PRWithParams::ConfigParserTest < Minitest::Test
   private
 
   def io_on_read
-    ->(file_path) do
+    lambda do |file_path|
       raise ArgumentError unless file_path == '/file/path.yml'
 
       @parsed_config.to_yaml

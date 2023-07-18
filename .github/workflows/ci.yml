@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  validate-conventional-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for conventional commit
+        uses: agenthunt/conventional-commit-checker-action@v1.0.0
+        with:
+          pr-title-regex: '^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.*\))?(!)?(: (.*\s*)*))|(^Merge (.*\s*)*)|(^Initial commit$)'
+          pr-body-regex: '.*'
+
+  unit-test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'edited' }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+      - name: Install dependencies
+        run: bundle install
+      - name: Run tests
+        run: bundle exec rake test
+  rubocop:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'edited' }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-minitest:gemfile
+          reporter: github-pr-check
+          fail_on_error: true

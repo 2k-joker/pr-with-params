@@ -1,7 +1,54 @@
-# All Cops
+require:
+  - rubocop-minitest
+
 AllCops:
   TargetRubyVersion: 3.1.2
-# Style
+  Exclude:
+    - 'bin/**/*'
+  NewCops: enable
+
+#### ::STYLE ####
+
+# Let Ruby do it's thing when the time comes
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Decision whether to use alias or alias_method is not stylistic
+# See: https://blog.bigbinary.com/2012/01/08/alias-vs-alias-method.html
+Style/Alias:
+  Enabled: false
+
+# This still common in Rails and usually doesn't result in problems.
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/CollectionMethods:
+  Description: Preferred collection methods.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#map-find-select-reduce-size
+  Enabled: true
+  PreferredMethods:
+    collect: map
+    collect!: map!
+    find: detect
+    find_all: select
+    reduce: inject
+
+# We don't enforce per-class documentation.
+Style/Documentation:
+  Enabled: false
+
+# We don't mind two-line empty methods as they're easier to start editing and
+# pretty common in auto-generated Rails controllers.
+Style/EmptyMethod:
+  Enabled: false
+
+# We allow hash rockets in rake task dependencies, e.g. task :my_task => :dep.
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
+
+# There's no statistical difference between single and double quotes
+# performance.
+# See: https://www.viget.com/articles/just-use-double-quoted-ruby-strings/
 Style/StringLiterals:
   Enabled: false
 
@@ -9,18 +56,107 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
 
-Style/ClassAndModuleChildren:
+Style/BlockDelimiters:
+  AllowBracesOnProceduralOneLiners: true
+
+Style/ModuleFunction:
+  EnforcedStyle: extend_self
+
+Style/SymbolArray:
+  MinSize: 3
+
+Style/WordArray:
+  MinSize: 3
+
+Style/FetchEnvVar:
   Enabled: false
 
-Style/Lambda:
+Style/OpenStructUse:
   Enabled: false
 
-Style/FrozenStringLiteralComment:
+Style/RedundantInitialize:
+  Exclude:
+    - 'test/**/*.rb'
+
+Style/Semicolon:
+  Exclude:
+    - 'test/**/*.rb'
+
+#### ::LAYOUT ####
+
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: trailing
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+  Enabled: false
+  IndentationWidth: ~
+
+# This rule does not detect string interpolations reliably,
+# e.g. accuses 'full_messages.join(", ")'
+Layout/SpaceInsideStringInterpolation:
   Enabled: false
 
-Style/Documentation:
-  Enabled: false
-
-# Layout
+# Allow long lines with comments
 Layout/LineLength:
   Max: 200
+  AllowedPatterns: ['(\A|\s)#']
+  Exclude:
+    - 'pr-with-params.gemspec'
+
+#### ::LINT ####
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'test/**/*.rb'
+
+#### ::METRICS ####
+
+# Methods should be easy to read, enforcing an arbitrary metric as number
+# of lines is not the way to do it though.
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+#### ::NAMING ####
+
+# Allow arbitrary symbol names
+Naming/VariableNumber:
+  CheckSymbols: false
+
+Naming/BlockForwarding:
+  Enabled: false
+
+#### ::GEM ####
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Gemspec/OrderedDependencies:
+  Enabled: false
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+#### ::MINITEST ####
+Minitest/MultipleAssertions:
+  Max: 5

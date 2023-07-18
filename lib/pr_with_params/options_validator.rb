@@ -25,7 +25,7 @@ module PRWithParams
   end
 
   class ConventionalCommitValidator
-    CONVENTIONAL_COMMIT_REGEX = /^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.*\))?(!)?(: (.*\s*)*))|(^Merge (.*\s*)*)|(^Initial commit$)/.freeze
+    CONVENTIONAL_COMMIT_REGEX = /^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.*\))?(!)?(: (.*\s*)*))|(^Merge (.*\s*)*)|(^Initial commit$)/
 
     def initialize(options)
       @commit_message = options[:title]

@@ -1,9 +1,19 @@
-/.bundle/
-/.yardoc
-/_yardoc/
+## GENERAL
 /coverage/
 /doc/
 /pkg/
 /spec/reports/
 /tmp/
 .DS_Store
+
+## BUNDLER
+*.gem
+/.bundle/
+Gemfile.lock
+vendor/bundle
+
+## IDEs
+.idea/
+.yardoc
+/.yardoc
+/_yardoc/
