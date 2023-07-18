@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport", "~> 7.0.4"
 
   spec.add_development_dependency "minitest", "~> 5.18.0"
-  spec.add_development_dependency "rubocop", "~> 0.80"
+  spec.add_development_dependency "rubocop", "~> 1.39"
   spec.add_development_dependency "rubocop-minitest", "~> 0.31.0"
   spec.add_development_dependency "minitest-stub_any_instance", "~> 1.0.3"
   spec.add_development_dependency "pry", "~> 0.13.1"
